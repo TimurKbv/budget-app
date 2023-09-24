@@ -1,2 +1,2 @@
 # budget-app
-Nest.js PostgreSQL TypeOrm React 
+Nest.js PostgreSQL TypeOrm React TypeScript
