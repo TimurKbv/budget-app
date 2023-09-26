@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const category_entity_1 = require("../../category/entities/category.entity");
+const transaction_entity_1 = require("../../transaction/entities/transaction.entity");
 const typeorm_1 = require("typeorm");
 let User = class User {
 };
@@ -26,6 +28,16 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => category_entity_1.Category, (category) => category.user, {
+        onDelete: 'CASCADE',
+    }),
+    __metadata("design:type", Array)
+], User.prototype, "categories", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => transaction_entity_1.Transaction, (transaction) => transaction.user),
+    __metadata("design:type", Array)
+], User.prototype, "transactions", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
