@@ -5,28 +5,101 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransactionService = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const transaction_entity_1 = require("./entities/transaction.entity");
+const typeorm_2 = require("typeorm");
 let TransactionService = class TransactionService {
-    create(createTransactionDto) {
-        return 'This action adds a new transaction';
+    constructor(transactionRepository) {
+        this.transactionRepository = transactionRepository;
     }
-    findAll() {
-        return `This action returns all transaction`;
+    async create(createTransactionDto, id) {
+        const newTransaction = {
+            title: createTransactionDto.title,
+            amount: createTransactionDto.amount,
+            type: createTransactionDto.type,
+            user: { id },
+            category: { id: +createTransactionDto.category },
+        };
+        if (!newTransaction) {
+            throw new common_1.BadRequestException(' Something went wrong');
+        }
+        return await this.transactionRepository.save(newTransaction);
     }
-    findOne(id) {
-        return `This action returns a #${id} transaction`;
+    async findAll(id) {
+        const transactions = await this.transactionRepository.find({
+            where: {
+                user: { id },
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+        });
+        return transactions;
     }
-    update(id, updateTransactionDto) {
-        return `This action updates a #${id} transaction`;
+    async findOne(id) {
+        const transaction = await this.transactionRepository.findOne({
+            where: {
+                id,
+            },
+            relations: {
+                user: true,
+                category: true,
+            },
+        });
+        if (!transaction) {
+            throw new common_1.NotFoundException('Transaction not Found');
+        }
+        return transaction;
     }
-    remove(id) {
-        return `This action removes a #${id} transaction`;
+    async update(id, updateTransactionDto) {
+        const updatedTransaction = await this.transactionRepository.findOne({
+            where: { id },
+        });
+        if (!updatedTransaction) {
+            throw new common_1.NotFoundException('Transaction not found');
+        }
+        return await this.transactionRepository.update(id, updateTransactionDto);
+    }
+    async remove(id) {
+        const transaction = await this.transactionRepository.findOne({
+            where: { id },
+        });
+        if (!transaction) {
+            throw new common_1.NotFoundException('Transaction not found');
+        }
+        return await this.transactionRepository.delete(id);
+    }
+    async findAllWithPagination(id, page, limit) {
+        const transactions = await this.transactionRepository.find({
+            where: {
+                user: { id },
+            },
+            relations: {
+                category: true,
+                user: true,
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+            take: limit,
+            skip: (page - 1) * limit,
+        });
+        return transactions;
     }
 };
 exports.TransactionService = TransactionService;
 exports.TransactionService = TransactionService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(transaction_entity_1.Transaction)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], TransactionService);
 //# sourceMappingURL=transaction.service.js.map

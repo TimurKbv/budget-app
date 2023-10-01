@@ -17,7 +17,7 @@ let Transaction = class Transaction {
 };
 exports.Transaction = Transaction;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ name: 'transaction_id' }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ name: 'transaction_id' }),
     __metadata("design:type", Number)
 ], Transaction.prototype, "id", void 0);
 __decorate([

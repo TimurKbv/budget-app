@@ -10,11 +10,14 @@ exports.TransactionModule = void 0;
 const common_1 = require("@nestjs/common");
 const transaction_service_1 = require("./transaction.service");
 const transaction_controller_1 = require("./transaction.controller");
+const typeorm_1 = require("@nestjs/typeorm");
+const transaction_entity_1 = require("./entities/transaction.entity");
 let TransactionModule = class TransactionModule {
 };
 exports.TransactionModule = TransactionModule;
 exports.TransactionModule = TransactionModule = __decorate([
     (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([transaction_entity_1.Transaction])],
         controllers: [transaction_controller_1.TransactionController],
         providers: [transaction_service_1.TransactionService],
     })
