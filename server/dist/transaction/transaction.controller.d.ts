@@ -15,6 +15,7 @@ export declare class TransactionController {
             id: number;
         };
     } & import("./entities/transaction.entity").Transaction>;
+    findAllByType(req: any, type: string): Promise<number>;
     findAllWithPagination(req: any, page?: number, limit?: number): Promise<import("./entities/transaction.entity").Transaction[]>;
     findAll(req: any): Promise<import("./entities/transaction.entity").Transaction[]>;
     findOne(id: string): Promise<import("./entities/transaction.entity").Transaction>;

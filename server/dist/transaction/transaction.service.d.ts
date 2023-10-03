@@ -21,4 +21,5 @@ export declare class TransactionService {
     update(id: number, updateTransactionDto: UpdateTransactionDto): Promise<import("typeorm").UpdateResult>;
     remove(id: number): Promise<import("typeorm").DeleteResult>;
     findAllWithPagination(id: number, page: number, limit: number): Promise<Transaction[]>;
+    findAllByType(id: number, type: string): Promise<number>;
 }

@@ -95,6 +95,16 @@ let TransactionService = class TransactionService {
         });
         return transactions;
     }
+    async findAllByType(id, type) {
+        const transactions = await this.transactionRepository.find({
+            where: {
+                user: { id },
+                type,
+            },
+        });
+        const total = transactions.reduce((acc, curr) => acc + curr.amount, 0);
+        return total;
+    }
 };
 exports.TransactionService = TransactionService;
 exports.TransactionService = TransactionService = __decorate([
