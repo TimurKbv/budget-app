@@ -4,9 +4,21 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 export declare class TransactionController {
     private readonly transactionService;
     constructor(transactionService: TransactionService);
-    create(createTransactionDto: CreateTransactionDto): string;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateTransactionDto: UpdateTransactionDto): string;
-    remove(id: string): string;
+    create(createTransactionDto: CreateTransactionDto, req: any): Promise<{
+        title: string;
+        amount: number;
+        type: "expense" | "income";
+        user: {
+            id: number;
+        };
+        category: {
+            id: number;
+        };
+    } & import("./entities/transaction.entity").Transaction>;
+    findAllByType(req: any, type: string): Promise<number>;
+    findAllWithPagination(req: any, page?: number, limit?: number): Promise<import("./entities/transaction.entity").Transaction[]>;
+    findAll(req: any): Promise<import("./entities/transaction.entity").Transaction[]>;
+    findOne(id: string): Promise<import("./entities/transaction.entity").Transaction>;
+    update(id: string, updateTransactionDto: UpdateTransactionDto): Promise<import("typeorm").UpdateResult>;
+    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }
