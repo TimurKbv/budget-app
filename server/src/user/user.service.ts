@@ -8,44 +8,44 @@ import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService,
-  ) {}
+	constructor(
+		@InjectRepository(User) private readonly userRepository: Repository<User>,
+		private readonly jwtService: JwtService,
+	) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const userExist = await this.userRepository.findOne({
-      where: {
-        email: createUserDto.email,
-      },
-    })
-    if (userExist) {
-      throw new BadRequestException(
-        `User with email: ${createUserDto.email} already exists!`,
-      )
-    }
-    const newUser = await this.userRepository.save({
-      email: createUserDto.email,
-      password: await argon2.hash(createUserDto.password),
-    })
+	async create(createUserDto: CreateUserDto) {
+		const userExist = await this.userRepository.findOne({
+			where: {
+				email: createUserDto.email,
+			},
+		})
+		if (userExist) {
+			throw new BadRequestException(
+				`User with email: ${createUserDto.email} already exists!`,
+			)
+		}
+		const newUser = await this.userRepository.save({
+			email: createUserDto.email,
+			password: await argon2.hash(createUserDto.password),
+		})
 
-    const token = this.jwtService.sign({ email: createUserDto.email })
-    return { newUser, token }
-  }
+		const token = this.jwtService.sign({ email: createUserDto.email })
+		return { newUser, token }
+	}
 
-  async findOne(email: string) {
-    return await this.userRepository.findOne({ where: { email } })
-  }
+	async findOne(email: string) {
+		return await this.userRepository.findOne({ where: { email } })
+	}
 
-  // findAll() {
-  //   return `This action returns all user`
-  // }
+	// findAll() {
+	//   return `This action returns all user`
+	// }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`
-  // }
+	// update(id: number, updateUserDto: UpdateUserDto) {
+	//   return `This action updates a #${id} user`
+	// }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`
-  // }
+	// remove(id: number) {
+	//   return `This action removes a #${id} user`
+	// }
 }
