@@ -22,8 +22,6 @@ let AuthorGuard = class AuthorGuard {
         const request = context.switchToHttp().getRequest();
         const { id, type } = request.params;
         let entity;
-        console.log('Type is =>>> ' + type);
-        console.log('User is =>>>' + JSON.stringify(request.user));
         switch (type) {
             case 'transaction':
                 entity = await this.transactionService.findOne(id);
@@ -34,7 +32,6 @@ let AuthorGuard = class AuthorGuard {
             default:
                 throw new common_1.NotFoundException('Something went wrong...');
         }
-        console.log('Transaction creator is =>>>' + JSON.stringify(entity.user));
         const user = request.user;
         if (entity && user && user.id === entity.user.id) {
             return true;

@@ -33,13 +33,13 @@ export class CategoryController {
 		return this.categoryService.findAll(+req.user.id)
 	}
 
-	@Get(':id')
+	@Get(':type/:id')
 	@UseGuards(JwtAuthGuard)
 	findOne(@Param('id') id: string) {
 		return this.categoryService.findOne(+id)
 	}
 
-	@Patch(':id')
+	@Patch(':type/:id')
 	@UseGuards(JwtAuthGuard)
 	update(
 		@Param('id') id: string,
@@ -48,7 +48,7 @@ export class CategoryController {
 		return this.categoryService.update(+id, updateCategoryDto)
 	}
 
-	@Delete(':id')
+	@Delete(':type/:id')
 	@UseGuards(JwtAuthGuard)
 	remove(@Param('id') id: string) {
 		return this.categoryService.remove(+id)
