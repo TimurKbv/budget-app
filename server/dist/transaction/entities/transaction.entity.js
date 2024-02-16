@@ -34,7 +34,9 @@ __decorate([
     __metadata("design:type", user_entity_1.User)
 ], Transaction.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => category_entity_1.Category, (category) => category.transactions),
+    (0, typeorm_1.ManyToOne)(() => category_entity_1.Category, (category) => category.transactions, {
+        onDelete: 'SET NULL',
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'category_id' }),
     __metadata("design:type", category_entity_1.Category)
 ], Transaction.prototype, "category", void 0);
